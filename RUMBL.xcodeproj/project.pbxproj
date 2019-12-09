@@ -14,6 +14,10 @@
 		77DD63C0239EE1440079A946 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 77DD63BF239EE1440079A946 /* Assets.xcassets */; };
 		77DD63C3239EE1440079A946 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 77DD63C1239EE1440079A946 /* LaunchScreen.storyboard */; };
 		77DD63CE239EE1440079A946 /* RUMBLTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 77DD63CD239EE1440079A946 /* RUMBLTests.swift */; };
+		77DD63DA239EE2DB0079A946 /* Utility.swift in Sources */ = {isa = PBXBuildFile; fileRef = 77DD63D9239EE2DB0079A946 /* Utility.swift */; };
+		77DD63DC239EE3B90079A946 /* assignment.json in Resources */ = {isa = PBXBuildFile; fileRef = 77DD63DB239EE3B90079A946 /* assignment.json */; };
+		77DD63DE239EE4160079A946 /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 77DD63DD239EE4160079A946 /* Constants.swift */; };
+		77DD63E1239EE5030079A946 /* ContentModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 77DD63E0239EE5030079A946 /* ContentModel.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -38,6 +42,10 @@
 		77DD63C9239EE1440079A946 /* RUMBLTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = RUMBLTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		77DD63CD239EE1440079A946 /* RUMBLTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RUMBLTests.swift; sourceTree = "<group>"; };
 		77DD63CF239EE1440079A946 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		77DD63D9239EE2DB0079A946 /* Utility.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Utility.swift; sourceTree = "<group>"; };
+		77DD63DB239EE3B90079A946 /* assignment.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = assignment.json; sourceTree = "<group>"; };
+		77DD63DD239EE4160079A946 /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
+		77DD63E0239EE5030079A946 /* ContentModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentModel.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -79,6 +87,9 @@
 		77DD63B5239EE1420079A946 /* RUMBL */ = {
 			isa = PBXGroup;
 			children = (
+				77DD63DB239EE3B90079A946 /* assignment.json */,
+				77DD63DF239EE4DF0079A946 /* Model */,
+				77DD63D8239EE2C90079A946 /* Resources */,
 				77DD63B6239EE1420079A946 /* AppDelegate.swift */,
 				77DD63B8239EE1420079A946 /* SceneDelegate.swift */,
 				77DD63BA239EE1420079A946 /* ViewController.swift */,
@@ -97,6 +108,23 @@
 				77DD63CF239EE1440079A946 /* Info.plist */,
 			);
 			path = RUMBLTests;
+			sourceTree = "<group>";
+		};
+		77DD63D8239EE2C90079A946 /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				77DD63D9239EE2DB0079A946 /* Utility.swift */,
+				77DD63DD239EE4160079A946 /* Constants.swift */,
+			);
+			path = Resources;
+			sourceTree = "<group>";
+		};
+		77DD63DF239EE4DF0079A946 /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				77DD63E0239EE5030079A946 /* ContentModel.swift */,
+			);
+			path = Model;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -180,6 +208,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				77DD63DC239EE3B90079A946 /* assignment.json in Resources */,
 				77DD63C3239EE1440079A946 /* LaunchScreen.storyboard in Resources */,
 				77DD63C0239EE1440079A946 /* Assets.xcassets in Resources */,
 				77DD63BE239EE1420079A946 /* Main.storyboard in Resources */,
@@ -200,9 +229,12 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				77DD63DE239EE4160079A946 /* Constants.swift in Sources */,
+				77DD63DA239EE2DB0079A946 /* Utility.swift in Sources */,
 				77DD63BB239EE1420079A946 /* ViewController.swift in Sources */,
 				77DD63B7239EE1420079A946 /* AppDelegate.swift in Sources */,
 				77DD63B9239EE1420079A946 /* SceneDelegate.swift in Sources */,
+				77DD63E1239EE5030079A946 /* ContentModel.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
