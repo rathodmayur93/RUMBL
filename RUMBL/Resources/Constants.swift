@@ -9,5 +9,7 @@
 import Foundation
 
 struct Constants {
-    static let jsonFileName = "assignment"
+    
+    static let jsonFileName         = "assignment"
+    static let exploreScreenTitle   = "Explore"
 }

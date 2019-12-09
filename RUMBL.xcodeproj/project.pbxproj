@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		77923328239EF5680002F8A8 /* ContentCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 77923327239EF5680002F8A8 /* ContentCollectionViewCell.swift */; };
 		77DD63B7239EE1420079A946 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 77DD63B6239EE1420079A946 /* AppDelegate.swift */; };
 		77DD63B9239EE1420079A946 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 77DD63B8239EE1420079A946 /* SceneDelegate.swift */; };
 		77DD63BB239EE1420079A946 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 77DD63BA239EE1420079A946 /* ViewController.swift */; };
@@ -18,6 +19,7 @@
 		77DD63DC239EE3B90079A946 /* assignment.json in Resources */ = {isa = PBXBuildFile; fileRef = 77DD63DB239EE3B90079A946 /* assignment.json */; };
 		77DD63DE239EE4160079A946 /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 77DD63DD239EE4160079A946 /* Constants.swift */; };
 		77DD63E1239EE5030079A946 /* ContentModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 77DD63E0239EE5030079A946 /* ContentModel.swift */; };
+		77DD63E4239EECD90079A946 /* ViewControllerTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 77DD63E3239EECD90079A946 /* ViewControllerTableViewCell.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -31,6 +33,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		77923327239EF5680002F8A8 /* ContentCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentCollectionViewCell.swift; sourceTree = "<group>"; };
 		77DD63B3239EE1420079A946 /* RUMBL.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = RUMBL.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		77DD63B6239EE1420079A946 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		77DD63B8239EE1420079A946 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -46,6 +49,7 @@
 		77DD63DB239EE3B90079A946 /* assignment.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = assignment.json; sourceTree = "<group>"; };
 		77DD63DD239EE4160079A946 /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
 		77DD63E0239EE5030079A946 /* ContentModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentModel.swift; sourceTree = "<group>"; };
+		77DD63E3239EECD90079A946 /* ViewControllerTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewControllerTableViewCell.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -88,8 +92,9 @@
 			isa = PBXGroup;
 			children = (
 				77DD63DB239EE3B90079A946 /* assignment.json */,
-				77DD63DF239EE4DF0079A946 /* Model */,
 				77DD63D8239EE2C90079A946 /* Resources */,
+				77DD63DF239EE4DF0079A946 /* Model */,
+				77DD63E2239EEC840079A946 /* View */,
 				77DD63B6239EE1420079A946 /* AppDelegate.swift */,
 				77DD63B8239EE1420079A946 /* SceneDelegate.swift */,
 				77DD63BA239EE1420079A946 /* ViewController.swift */,
@@ -125,6 +130,15 @@
 				77DD63E0239EE5030079A946 /* ContentModel.swift */,
 			);
 			path = Model;
+			sourceTree = "<group>";
+		};
+		77DD63E2239EEC840079A946 /* View */ = {
+			isa = PBXGroup;
+			children = (
+				77DD63E3239EECD90079A946 /* ViewControllerTableViewCell.swift */,
+				77923327239EF5680002F8A8 /* ContentCollectionViewCell.swift */,
+			);
+			path = View;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -233,8 +247,10 @@
 				77DD63DA239EE2DB0079A946 /* Utility.swift in Sources */,
 				77DD63BB239EE1420079A946 /* ViewController.swift in Sources */,
 				77DD63B7239EE1420079A946 /* AppDelegate.swift in Sources */,
+				77923328239EF5680002F8A8 /* ContentCollectionViewCell.swift in Sources */,
 				77DD63B9239EE1420079A946 /* SceneDelegate.swift in Sources */,
 				77DD63E1239EE5030079A946 /* ContentModel.swift in Sources */,
+				77DD63E4239EECD90079A946 /* ViewControllerTableViewCell.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
