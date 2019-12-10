@@ -37,7 +37,7 @@
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                                 <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="Jqj-xr-kHP">
-                                                    <rect key="frame" x="0.0" y="49" width="375" height="201"/>
+                                                    <rect key="frame" x="16" y="49" width="359" height="201"/>
                                                     <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
                                                     <collectionViewFlowLayout key="collectionViewLayout" automaticEstimatedItemSize="YES" minimumLineSpacing="10" minimumInteritemSpacing="10" id="Aa8-AR-65w">
                                                         <size key="itemSize" width="125" height="170"/>
@@ -79,7 +79,7 @@
                                             <constraints>
                                                 <constraint firstAttribute="bottom" secondItem="Jqj-xr-kHP" secondAttribute="bottom" id="Ghu-Wc-7U1"/>
                                                 <constraint firstItem="U1P-oV-hFe" firstAttribute="trailing" secondItem="9Sg-bl-771" secondAttribute="trailingMargin" id="Yig-17-tiQ"/>
-                                                <constraint firstItem="Jqj-xr-kHP" firstAttribute="leading" secondItem="9Sg-bl-771" secondAttribute="leading" id="bMw-S9-ISm"/>
+                                                <constraint firstItem="Jqj-xr-kHP" firstAttribute="leading" secondItem="9Sg-bl-771" secondAttribute="leading" constant="16" id="bMw-S9-ISm"/>
                                                 <constraint firstItem="Jqj-xr-kHP" firstAttribute="top" secondItem="U1P-oV-hFe" secondAttribute="bottom" constant="8" id="czh-RQ-TRf"/>
                                                 <constraint firstItem="U1P-oV-hFe" firstAttribute="leading" secondItem="9Sg-bl-771" secondAttribute="leadingMargin" id="f6v-oM-lnH"/>
                                                 <constraint firstItem="U1P-oV-hFe" firstAttribute="top" secondItem="9Sg-bl-771" secondAttribute="topMargin" id="qLo-qS-oCz"/>
@@ -113,6 +113,58 @@
             </objects>
             <point key="canvasLocation" x="1077.5999999999999" y="125.4872563718141"/>
         </scene>
+        <!--AV Player View Controller-->
+        <scene sceneID="npp-VL-WdM">
+            <objects>
+                <avPlayerViewController storyboardIdentifier="PlayerViewController" videoGravity="AVLayerVideoGravityResizeAspect" id="O2i-1p-4pH" customClass="PlayerViewController" customModule="RUMBL" customModuleProvider="target" sceneMemberID="viewController">
+                    <size key="freeformSize" width="375" height="667"/>
+                    <connections>
+                        <outlet property="backButton" destination="vZ8-q6-X0g" id="i2u-GP-81h"/>
+                        <outlet property="customPlayerView" destination="j3R-lm-qHI" id="UaR-pq-ePt"/>
+                        <outlet property="playButton" destination="4rv-c4-H3G" id="169-W8-o6f"/>
+                    </connections>
+                </avPlayerViewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="Gjm-f5-FmY" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+                <view contentMode="scaleToFill" id="j3R-lm-qHI">
+                    <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                    <subviews>
+                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="vZ8-q6-X0g">
+                            <rect key="frame" x="16" y="20" width="36" height="36"/>
+                            <constraints>
+                                <constraint firstAttribute="height" constant="36" id="IYe-fl-Vbo"/>
+                                <constraint firstAttribute="width" constant="36" id="Z40-Pf-PBe"/>
+                            </constraints>
+                            <state key="normal" image="backBtn"/>
+                            <connections>
+                                <action selector="backButtonAction:" destination="O2i-1p-4pH" eventType="touchUpInside" id="l4K-Ls-SOE"/>
+                            </connections>
+                        </button>
+                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="4rv-c4-H3G">
+                            <rect key="frame" x="169.5" y="315.5" width="36" height="36"/>
+                            <constraints>
+                                <constraint firstAttribute="height" constant="36" id="5Qb-2S-Jqm"/>
+                                <constraint firstAttribute="width" constant="36" id="poc-rR-3la"/>
+                            </constraints>
+                            <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                            <state key="normal" image="play.fill" catalog="system"/>
+                            <connections>
+                                <action selector="playButtonAction:" destination="O2i-1p-4pH" eventType="touchUpInside" id="VqR-q9-v76"/>
+                            </connections>
+                        </button>
+                    </subviews>
+                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                    <constraints>
+                        <constraint firstItem="vZ8-q6-X0g" firstAttribute="leading" secondItem="VN8-YT-Hox" secondAttribute="leading" constant="16" id="1KM-5O-btD"/>
+                        <constraint firstItem="4rv-c4-H3G" firstAttribute="centerX" secondItem="j3R-lm-qHI" secondAttribute="centerX" id="KFu-zh-Zfa"/>
+                        <constraint firstItem="4rv-c4-H3G" firstAttribute="centerY" secondItem="j3R-lm-qHI" secondAttribute="centerY" id="bkP-hD-5Fe"/>
+                        <constraint firstItem="vZ8-q6-X0g" firstAttribute="top" secondItem="VN8-YT-Hox" secondAttribute="top" constant="20" id="nbc-af-7Hp"/>
+                    </constraints>
+                    <viewLayoutGuide key="safeArea" id="VN8-YT-Hox"/>
+                </view>
+            </objects>
+            <point key="canvasLocation" x="1886" y="125"/>
+        </scene>
         <!--Navigation Controller-->
         <scene sceneID="NDy-oQ-Zfr">
             <objects>
@@ -132,4 +184,8 @@
             <point key="canvasLocation" x="138.40000000000001" y="125.4872563718141"/>
         </scene>
     </scenes>
+    <resources>
+        <image name="backBtn" width="9" height="16"/>
+        <image name="play.fill" catalog="system" width="58" height="64"/>
+    </resources>
 </document>

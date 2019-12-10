@@ -17,11 +17,23 @@ class ContentCollectionViewCell: UICollectionViewCell {
     }
     
     //Setting up the collectionView cell
-    func setupCollectionCell(){
+    func setupCollectionCell(content : Node?){
         
-        //Creating the placeHolder image and setting it to the imageView
-        let placeHolderImageView    = UIImage(named: "noimageList")
-        thumbImageView.image        = placeHolderImageView
+        //Creating the dispatch queue
+        let concurrentQueue = DispatchQueue(label: "com.rumbl.loadThumbnail", attributes: .concurrent)
+        
+        concurrentQueue.async {
+            //Creating the placeHolder image and setting it to the imageView
+            let placeHolderImageView    = Utility.generateThumbnail(videoUrl: content?.video?.encodeURL ?? "")  //
+            
+            DispatchQueue.main.async {
+                if let thumbnailImage = placeHolderImageView{
+                    self.thumbImageView.image = thumbnailImage
+                }else{
+                    self.thumbImageView.image = UIImage(named: "noimageList")
+                }
+            }
+            
+        }
     }
-    
 }

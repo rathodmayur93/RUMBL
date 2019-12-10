@@ -12,4 +12,12 @@ struct Constants {
     
     static let jsonFileName         = "assignment"
     static let exploreScreenTitle   = "Explore"
+    
+    
+    //Storyboard names
+    static let mainStoryboard               = "Main"
+    
+    //ViewController Names
+    static let exploreScreen                = "ViewController"
+    static let playerScreen                 = "PlayerViewController"
 }

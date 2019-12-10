@@ -7,6 +7,8 @@
 //
 
 import UIKit
+import AVKit
+import AVFoundation
 
 class ViewController: UIViewController {
 
@@ -44,12 +46,25 @@ class ViewController: UIViewController {
         contentModel = Utility.readJSONFromFile(fileName: Constants.jsonFileName)
     }
     
+    //Navigate to the PlayerView Controller method
+    func navigateToPlayerScreen(categoryIndex : Int, selectedVideoIndex : Int){
+        
+        let mainStoryboard = UIStoryboard(name: Constants.mainStoryboard, bundle: Bundle.main)
+        let vc : PlayerViewController = mainStoryboard.instantiateViewController(withIdentifier: Constants.playerScreen) as! PlayerViewController
+        
+        //Passing this data to DetailViewController
+        vc.videoUrl = contentModel?[categoryIndex].nodes?[selectedVideoIndex].video?.encodeURL ?? ""
+        
+        navigationController?.pushViewController(vc, animated: true)
+    }
+    
 }
 
 //MARK:- Extension Methods
 
 //MARK: TableView Methods
 extension ViewController : UITableViewDelegate, UITableViewDataSource {
+    
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return contentModel?.count ?? 0
@@ -96,13 +111,32 @@ extension ViewController : UICollectionViewDelegate, UICollectionViewDataSource 
         }
         
         //Setting up the cell
-        cell.setupCollectionCell()
+        //cell.setupCollectionCell(content: contentModel?[collectionView.tag].nodes?[indexPath.item])
         
         return cell
     }
     
+    func collectionView(_ collectionView: UICollectionView, willDisplay cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
+        
+        if let contentCell = cell as? ContentCollectionViewCell{
+            contentCell.setupCollectionCell(content: contentModel?[collectionView.tag].nodes?[indexPath.item])
+        }
+    }
+    
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         print("Selected Video Position \(indexPath.item)")
+        
+//        let videoURL                = URL(string: contentModel?[collectionView.tag].nodes?[indexPath.item].video?.encodeURL ?? "")
+//        let player                  = AVPlayer(url: videoURL!)
+//        let playerViewController    = AVPlayerViewController()
+//        playerViewController.player = player
+//
+//        self.present(playerViewController, animated: true) {
+//            playerViewController.player!.play()
+//        }
+        
+        navigateToPlayerScreen(categoryIndex: collectionView.tag, selectedVideoIndex: indexPath.item)
+        
     }
 }
 

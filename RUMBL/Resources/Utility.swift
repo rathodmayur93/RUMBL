@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import AVFoundation
 
 struct Utility {
     
@@ -69,4 +70,27 @@ struct Utility {
         
         return height
     }
+    
+    /*
+        - Getting thumbnail from the video file
+     */
+    static func generateThumbnail(videoUrl: String) -> UIImage? {
+        
+        do {
+            let url                                         = URL(string: videoUrl)
+            let asset                                       = AVURLAsset(url: url!)
+            let imageGenerator                              = AVAssetImageGenerator(asset: asset)
+            imageGenerator.appliesPreferredTrackTransform   = true
+            let cgImage                                     = try imageGenerator.copyCGImage(at: CMTime(seconds: 2.0, preferredTimescale: 60),
+                                                                                             actualTime: nil)
+            
+            return UIImage(cgImage: cgImage)
+            
+        } catch {
+            
+            print(error.localizedDescription)
+            return nil
+        }
+    }
 }
+
