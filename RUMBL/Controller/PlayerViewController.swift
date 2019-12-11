@@ -24,7 +24,8 @@ class PlayerViewController: AVPlayerViewController {
     fileprivate var isPlaying = true
     
     //Getting the values from previous ViewCOntroller i.e ViewController or Explore Screen
-    public var videoUrl : String = ""
+    public var videoUrl  : String = ""
+    public var itemIndex : Int    = 0
     
     
     override func viewDidLoad() {
@@ -36,6 +37,14 @@ class PlayerViewController: AVPlayerViewController {
     
     override func viewWillAppear(_ animated: Bool) {
         hideNavigationbar()
+        print("Player Will Appear")
+        
+        player?.play()
+    }
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        print("PLayer Got Disappear")
+        player?.pause()
     }
     
     //MARK:- UI Related Methods
@@ -80,7 +89,7 @@ class PlayerViewController: AVPlayerViewController {
     
     //MARK:- IBAction Methods
     @IBAction func backButtonAction(_ sender: Any) {
-        dismiss(animated: true, completion: nil)
+        navigationController?.popViewController(animated: true)
     }
     
     @IBAction func playButtonAction(_ sender: Any) {
@@ -108,5 +117,23 @@ class PlayerViewController: AVPlayerViewController {
         playButton.isHidden = isPlaying
         
     }
-    
+}
+
+extension PlayerViewController: PhotoDetailTransitionAnimatorDelegate {
+    func transitionWillStart() {
+        self.view.isHidden = true
+    }
+
+    func transitionDidEnd() {
+        self.view.isHidden = false
+    }
+
+    func referenceImage() -> UIImage? {
+        return UIImage(named: "noImageList")
+    }
+
+    func imageFrame() -> CGRect? {
+        let rect = CGRect.makeRect(aspectRatio: view.frame.size, insideRect: view.bounds)
+        return rect
+    }
 }

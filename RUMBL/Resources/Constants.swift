@@ -19,5 +19,7 @@ struct Constants {
     
     //ViewController Names
     static let exploreScreen                = "ViewController"
+    static let pageViewControllerScreen     = "PageViewController"
     static let playerScreen                 = "PlayerViewController"
+    static let mainPageViewController       = "MainPageViewController"
 }

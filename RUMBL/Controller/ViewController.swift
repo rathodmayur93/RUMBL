@@ -12,6 +12,10 @@ import AVFoundation
 
 class ViewController: UIViewController {
 
+    //MARK:- IBOutlet
+    @IBOutlet weak var tableView: UITableView!
+    
+    
     //MARK:- Variables
     fileprivate var contentModel : [ContentModel]?
     
@@ -21,6 +25,10 @@ class ViewController: UIViewController {
     //CollectionView Variables
     fileprivate var itemsPerRow     : CGFloat   = 3 // Collection View Number Of Grid In Single Row
     fileprivate let sectionInsets   = UIEdgeInsets(top: 0.0, left: 8.0, bottom: 8.0, right: 8.0)    // Collection View Grid Padding
+    
+    fileprivate var selectedCell            : ContentCollectionViewCell?
+    fileprivate var lastSelectedIndexPath   : IndexPath? = nil
+    fileprivate var lastSelectedRow         : Int        = 0
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -50,12 +58,19 @@ class ViewController: UIViewController {
     func navigateToPlayerScreen(categoryIndex : Int, selectedVideoIndex : Int){
         
         let mainStoryboard = UIStoryboard(name: Constants.mainStoryboard, bundle: Bundle.main)
-        let vc : PlayerViewController = mainStoryboard.instantiateViewController(withIdentifier: Constants.playerScreen) as! PlayerViewController
+        let vc : PageViewController = mainStoryboard.instantiateViewController(withIdentifier: Constants.pageViewControllerScreen) as! PageViewController
+        
+        //Setting the transition delegate since we want to perform navigation like photos app
+        //vc.transitioningDelegate = self
+
+        //navigationController?.transitioningDelegate = self
         
         //Passing this data to DetailViewController
-        vc.videoUrl = contentModel?[categoryIndex].nodes?[selectedVideoIndex].video?.encodeURL ?? ""
+        //vc.videoUrl = contentModel?[categoryIndex].nodes?[selectedVideoIndex].video?.encodeURL ?? ""
+        vc.nodes    = contentModel?[categoryIndex].nodes
         
         navigationController?.pushViewController(vc, animated: true)
+        //present(vc, animated: true, completion: nil)
     }
     
 }
@@ -126,15 +141,9 @@ extension ViewController : UICollectionViewDelegate, UICollectionViewDataSource 
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         print("Selected Video Position \(indexPath.item)")
         
-//        let videoURL                = URL(string: contentModel?[collectionView.tag].nodes?[indexPath.item].video?.encodeURL ?? "")
-//        let player                  = AVPlayer(url: videoURL!)
-//        let playerViewController    = AVPlayerViewController()
-//        playerViewController.player = player
-//
-//        self.present(playerViewController, animated: true) {
-//            playerViewController.player!.play()
-//        }
-        
+        selectedCell            = collectionView.cellForItem(at: indexPath) as? ContentCollectionViewCell
+        lastSelectedIndexPath   = indexPath
+        lastSelectedRow         = collectionView.tag
         navigateToPlayerScreen(categoryIndex: collectionView.tag, selectedVideoIndex: indexPath.item)
         
     }
@@ -158,5 +167,42 @@ extension ViewController : UICollectionViewDelegateFlowLayout{
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout,minimumLineSpacingForSectionAt section: Int) -> CGFloat {
         
         return sectionInsets.left
+    }
+}
+
+//MARK|:- Transition Delegate Methods
+extension ViewController : PhotoDetailTransitionAnimatorDelegate{
+    
+    func transitionWillStart() {
+        guard let lastSelected = self.lastSelectedIndexPath else { return }
+        if let cell = tableView.cellForRow(at: IndexPath(row: lastSelectedRow, section: 0)) as? ViewControllerTableViewCell{
+            cell.collectionView.cellForItem(at: lastSelected)?.isHidden = true
+        }
+    }
+
+    func transitionDidEnd() {
+        guard let lastSelected = self.lastSelectedIndexPath else { return }
+        if let cell = tableView.cellForRow(at: IndexPath(row: lastSelectedRow, section: 0)) as? ViewControllerTableViewCell{
+            cell.collectionView.cellForItem(at: lastSelected)?.isHidden = false
+        }
+        
+    }
+
+    func referenceImage() -> UIImage? {
+        guard let lastSelected = self.lastSelectedIndexPath else { return nil }
+        guard let cell = tableView.cellForRow(at: IndexPath(row: lastSelectedRow, section: 0)) as? ViewControllerTableViewCell else { return nil }
+        guard let collectionViewCell = cell.collectionView.cellForItem(at: lastSelected) as? ContentCollectionViewCell else { return nil }
+        
+        return collectionViewCell.thumbImageView.image
+    }
+
+    func imageFrame() -> CGRect? {
+        guard let lastSelected = self.lastSelectedIndexPath,
+        let cell = tableView.cellForRow(at: IndexPath(row: lastSelectedRow, section: 0)) as? ViewControllerTableViewCell
+        else {
+            return nil
+        }
+
+        return cell.collectionView.convert(cell.frame, to: self.view)
     }
 }

@@ -108,6 +108,9 @@
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
                     </view>
                     <navigationItem key="navigationItem" id="RWR-kt-8H8"/>
+                    <connections>
+                        <outlet property="tableView" destination="HTa-xt-cdD" id="diC-dm-bwE"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
             </objects>
@@ -164,6 +167,29 @@
                 </view>
             </objects>
             <point key="canvasLocation" x="1886" y="125"/>
+        </scene>
+        <!--Page View Controller-->
+        <scene sceneID="84q-HW-9d1">
+            <objects>
+                <viewController storyboardIdentifier="PageViewController" id="A0H-hj-nU2" customClass="PageViewController" customModule="RUMBL" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="4e0-8Z-zQt">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
+                        <viewLayoutGuide key="safeArea" id="J4U-sh-jgc"/>
+                    </view>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="DlK-gP-hE2" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="2678" y="125"/>
+        </scene>
+        <!--Page View Controller-->
+        <scene sceneID="7vf-YW-tyc">
+            <objects>
+                <pageViewController storyboardIdentifier="MainPageViewController" autoresizesArchivedViewToFullSize="NO" transitionStyle="scroll" navigationOrientation="vertical" spineLocation="none" id="z45-lh-5AR" sceneMemberID="viewController"/>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="XxY-b3-gcK" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="3455" y="125"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="NDy-oQ-Zfr">

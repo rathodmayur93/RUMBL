@@ -11,6 +11,8 @@ import AVFoundation
 
 struct Utility {
     
+    //Loading thumbnail cache images
+    fileprivate let imageCache              = NSCache<NSString, UIImage>()
     
     /*
      - This function will read the local json file

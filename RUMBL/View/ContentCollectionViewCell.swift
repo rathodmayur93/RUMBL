@@ -10,7 +10,12 @@ import UIKit
 
 class ContentCollectionViewCell: UICollectionViewCell {
     
+    //MARK:- IBOutlets
     @IBOutlet weak var thumbImageView: UIImageView!
+    
+    //MARK:- Variables
+    fileprivate let imageCache      = NSCache<NSString, UIImage>()
+    fileprivate var thumbnailImage  : UIImage?
     
     override func awakeFromNib() {
         
@@ -24,16 +29,21 @@ class ContentCollectionViewCell: UICollectionViewCell {
         
         concurrentQueue.async {
             //Creating the placeHolder image and setting it to the imageView
-            let placeHolderImageView    = Utility.generateThumbnail(videoUrl: content?.video?.encodeURL ?? "")  //
             
-            DispatchQueue.main.async {
-                if let thumbnailImage = placeHolderImageView{
-                    self.thumbImageView.image = thumbnailImage
-                }else{
-                    self.thumbImageView.image = UIImage(named: "noimageList")
+            if let cacheImage = self.imageCache.object(forKey: content?.video?.encodeURL as NSString? ?? "") {
+                self.thumbnailImage = cacheImage
+            }else{
+            
+                self.thumbnailImage    = Utility.generateThumbnail(videoUrl: content?.video?.encodeURL ?? "")  //
+                
+                DispatchQueue.main.async {
+                    if let image = self.thumbnailImage{
+                        self.thumbImageView.image = image
+                    }else{
+                        self.thumbImageView.image = UIImage(named: "noimageList")
+                    }
                 }
             }
-            
         }
     }
 }
