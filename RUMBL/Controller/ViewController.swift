@@ -41,6 +41,11 @@ class ViewController: UIViewController {
         setUI()
     }
     
+    override func viewWillAppear(_ animated: Bool) {
+        //show navigation bar since we want to show the video on entire screen
+        showNavigationbar()
+    }
+    
     //MARK:- Setting Up UI
     func setUI(){
         
@@ -52,6 +57,10 @@ class ViewController: UIViewController {
         
         //Setting up the tableView
         setupTableView()
+    }
+    
+    func showNavigationbar(){
+        navigationController?.setNavigationBarHidden(false, animated: false)
     }
     
     /*

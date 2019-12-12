@@ -50,7 +50,6 @@ class PlayerViewController: AVPlayerViewController {
     }
     
     override func viewWillDisappear(_ animated: Bool) {
-        print("PLayer Got Disappear")
         print(("Observer removed"))
         player?.pause()
         //removingObserver()
@@ -60,82 +59,6 @@ class PlayerViewController: AVPlayerViewController {
     override func viewDidDisappear(_ animated: Bool) {
         //playerItem.addObserver(self, forKeyPath: #keyPath(AVPlayerItem.status), options: [.old, .new], context: &playerItemContext)
         //player?.currentItem?.removeObserver(self, forKeyPath: #keyPath(AVPlayerItem.status))
-    }
-    
-    //This method will continues observe the any change in the current scenario if there is any change it will invoke particular method
-    override func observeValue(forKeyPath keyPath: String?, of object: Any?, change: [NSKeyValueChangeKey : Any]?, context:UnsafeMutableRawPointer?) {
-        
-//        // Only handle observations for the playerItemContext
-//        guard context == &playerItemContext else {
-//            super.observeValue(forKeyPath: keyPath, of: object, change: change, context: context)
-//            return
-//        }
-//
-//        if keyPath == #keyPath(AVPlayerItem.status) {
-//            let status: AVPlayerItem.Status
-//            if let statusNumber = change?[.newKey] as? NSNumber {
-//                status = AVPlayerItem.Status(rawValue: statusNumber.intValue)!
-//            } else {
-//                status = .unknown
-//            }
-//
-//            // Switch over status value
-//            switch status {
-//            case .readyToPlay:
-//                progressIndicator.stopAnimating()
-//                //playerItem.addObserver(self, forKeyPath: #keyPath(AVPlayerItem.status), options: [.old, .new], context: &playerItemContext)
-//            case .failed:
-//                // Player item failed. See error.
-//                print("Unable to play video due to some technical issues")
-//            case .unknown:
-//                // Player item is not yet ready.
-//                progressIndicator.startAnimating()
-//            }
-//        }
-        
-//        if object is AVPlayerItem {
-//            switch keyPath {
-//                case "playbackBufferEmpty":
-//                    progressIndicator.startAnimating()
-//                    addingObservers()
-//                case "playbackLikelyToKeepUp":
-//                    progressIndicator.stopAnimating()
-//                    removingObserver()
-//                case "playbackBufferFull":
-//                    removingObserver()
-//                    progressIndicator.stopAnimating()
-//                case .none:
-//                    progressIndicator.stopAnimating()
-//                    removingObserver()
-//                case .some(_):
-//                    progressIndicator.stopAnimating()
-//                    removingObserver()
-//            }
-//        }
-        
-//        if keyPath == Constants.loadPlayerObserver{
-//            //Hide buffering activity indicator
-//            progressIndicator.stopAnimating()
-//        
-//        }
-//        else{
-//            if let status = self.player!.currentItem?.status{
-//                switch (status) {
-//                case .failed:
-//                    // Something went wrong!
-//                    print("Failed to play the content")
-//                case .readyToPlay:
-//                    // Item is ready to play, so just .play() it!
-//                    print("Let's Play The Conent")
-//                case .unknown:
-//                    // When some unknown issue occured
-//                    print("Oh god why you dont work")
-//                @unknown default:
-//                    print("Oh-no why its stopppedddd mahnnn")
-//                    
-//                }
-//            }
-//        }
     }
     
     //MARK:- UI Related Methods
