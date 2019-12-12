@@ -22,6 +22,9 @@ class ViewControllerTableViewCell: UITableViewCell {
         
         //Setting up the scroll direction
         setScrollDirection()
+        
+        //Setting the selection style to none
+        self.selectionStyle = .none
     }
 
     override func setSelected(_ selected: Bool, animated: Bool) {

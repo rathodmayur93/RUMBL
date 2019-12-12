@@ -13,7 +13,8 @@ import AVFoundation
 class PlayerViewController: AVPlayerViewController {
 
     //MARK:- IBOutlet Properties
-    @IBOutlet var customPlayerView: UIView!
+    @IBOutlet var customPlayerView          : UIView!
+    @IBOutlet weak var progressIndicator    : UIActivityIndicatorView!
     
     //Custom Player Views
     @IBOutlet weak var backButton: UIButton!
@@ -27,6 +28,9 @@ class PlayerViewController: AVPlayerViewController {
     public var videoUrl  : String = ""
     public var itemIndex : Int    = 0
     
+    // Key-value observing context
+    private var playerItemContext = 0
+    
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -36,15 +40,102 @@ class PlayerViewController: AVPlayerViewController {
     }
     
     override func viewWillAppear(_ animated: Bool) {
-        hideNavigationbar()
         print("Player Will Appear")
         
+        //Hide navigation bar since we want to show the video on entire screen
+        hideNavigationbar()
+        // If video is pause then play the video as soon as video appears to the user
         player?.play()
+        
     }
     
     override func viewWillDisappear(_ animated: Bool) {
         print("PLayer Got Disappear")
+        print(("Observer removed"))
         player?.pause()
+        //removingObserver()
+        
+    }
+    
+    override func viewDidDisappear(_ animated: Bool) {
+        //playerItem.addObserver(self, forKeyPath: #keyPath(AVPlayerItem.status), options: [.old, .new], context: &playerItemContext)
+        //player?.currentItem?.removeObserver(self, forKeyPath: #keyPath(AVPlayerItem.status))
+    }
+    
+    //This method will continues observe the any change in the current scenario if there is any change it will invoke particular method
+    override func observeValue(forKeyPath keyPath: String?, of object: Any?, change: [NSKeyValueChangeKey : Any]?, context:UnsafeMutableRawPointer?) {
+        
+//        // Only handle observations for the playerItemContext
+//        guard context == &playerItemContext else {
+//            super.observeValue(forKeyPath: keyPath, of: object, change: change, context: context)
+//            return
+//        }
+//
+//        if keyPath == #keyPath(AVPlayerItem.status) {
+//            let status: AVPlayerItem.Status
+//            if let statusNumber = change?[.newKey] as? NSNumber {
+//                status = AVPlayerItem.Status(rawValue: statusNumber.intValue)!
+//            } else {
+//                status = .unknown
+//            }
+//
+//            // Switch over status value
+//            switch status {
+//            case .readyToPlay:
+//                progressIndicator.stopAnimating()
+//                //playerItem.addObserver(self, forKeyPath: #keyPath(AVPlayerItem.status), options: [.old, .new], context: &playerItemContext)
+//            case .failed:
+//                // Player item failed. See error.
+//                print("Unable to play video due to some technical issues")
+//            case .unknown:
+//                // Player item is not yet ready.
+//                progressIndicator.startAnimating()
+//            }
+//        }
+        
+//        if object is AVPlayerItem {
+//            switch keyPath {
+//                case "playbackBufferEmpty":
+//                    progressIndicator.startAnimating()
+//                    addingObservers()
+//                case "playbackLikelyToKeepUp":
+//                    progressIndicator.stopAnimating()
+//                    removingObserver()
+//                case "playbackBufferFull":
+//                    removingObserver()
+//                    progressIndicator.stopAnimating()
+//                case .none:
+//                    progressIndicator.stopAnimating()
+//                    removingObserver()
+//                case .some(_):
+//                    progressIndicator.stopAnimating()
+//                    removingObserver()
+//            }
+//        }
+        
+//        if keyPath == Constants.loadPlayerObserver{
+//            //Hide buffering activity indicator
+//            progressIndicator.stopAnimating()
+//        
+//        }
+//        else{
+//            if let status = self.player!.currentItem?.status{
+//                switch (status) {
+//                case .failed:
+//                    // Something went wrong!
+//                    print("Failed to play the content")
+//                case .readyToPlay:
+//                    // Item is ready to play, so just .play() it!
+//                    print("Let's Play The Conent")
+//                case .unknown:
+//                    // When some unknown issue occured
+//                    print("Oh god why you dont work")
+//                @unknown default:
+//                    print("Oh-no why its stopppedddd mahnnn")
+//                    
+//                }
+//            }
+//        }
     }
     
     //MARK:- UI Related Methods
@@ -56,8 +147,29 @@ class PlayerViewController: AVPlayerViewController {
         //Setting up the tap gesture
         setupTapGesture()
         
+        //Adding the observers
+        addingObservers()
+        
         //Hide the play button
         playButton.isHidden = true
+        
+        //Setting the activity indicator
+        progressIndicator.hidesWhenStopped = true
+        
+        //Animating the progress bar
+        //progressIndicator.startAnimating()
+    }
+    
+    
+    //Adding the observers
+    func addingObservers(){
+        /*
+            - This observer will be triggered when app move to the background
+         */
+        NotificationCenter.default.addObserver(self,
+                                               selector: #selector(customPlayerTapAction),
+                                               name: UIApplication.willResignActiveNotification,
+                                               object: nil)
     }
     
     //Hide navigation bar
@@ -77,18 +189,107 @@ class PlayerViewController: AVPlayerViewController {
     
     //Setting up the AVPlayer
     func setupPlayer(){
+        
+        print("Observer Added")
+        
         let url                         = URL(string: videoUrl)!   // Playing the video from this URL
         let videoAsset                  = AVURLAsset(url: url, options: nil) //Converting URL into the AVURLAsset
         let playerItem                  = AVPlayerItem(asset: videoAsset) // Creating AVPlayerItem from videoAsset
-        player                          = AVPlayer(playerItem: playerItem) // Passing playerItem to AVPlayer to play video
+        
+        // Register as an observer of the player item's status property
+        //playerItem.addObserver(self, forKeyPath: #keyPath(AVPlayerItem.status), options: [.old, .new], context: &playerItemContext)
+        
+        player  = AVPlayer(playerItem: playerItem) // Passing playerItem to AVPlayer to play video
         player?.play()
+        
+        //addingObservers()
+        //Adding observer to the player which will tell us whether loading is done or not
+//        handlePlayerBuffer()
+//        player?.currentItem?.addObserver(self, forKeyPath: Constants.isBufferEmpty, options: .new, context: nil)
+//        player?.currentItem?.addObserver(self, forKeyPath: Constants.playBackLikelyToKeepItUp, options: .new, context: nil)
+//        player?.currentItem?.addObserver(self, forKeyPath: Constants.playBackBufferFull, options: .new, context: nil)
+//        player?.addObserver(self, forKeyPath: Constants.loadPlayerObserver, options: .new, context: nil)
+        
+        if let isPlayBackBufferEmpty = self.player?.currentItem?.isPlaybackBufferEmpty{
+            if isPlayBackBufferEmpty{
+                self.progressIndicator.isHidden = false
+            }
+        }
+        
+        if self.player?.currentItem?.status == AVPlayerItem.Status.readyToPlay{
+            if let isPlaybackLikelyToKeepUp = self.player?.currentItem?.isPlaybackLikelyToKeepUp {
+                if isPlaybackLikelyToKeepUp{
+                    self.progressIndicator.stopAnimating()
+                    self.progressIndicator.isHidden = true
+                }
+            }
+        }
         
         self.showsPlaybackControls = false                      // Do not show default controller
         self.contentOverlayView?.addSubview(customPlayerView)   // Adding custom player layer to AVPlayer
     }
     
+    //Adding the observer
+    func addingObserver(){
+        /*
+            - We will add the observer since we want to receive any events
+        */
+        player?.currentItem?.addObserver(self, forKeyPath: Constants.isBufferEmpty, options: .new, context: nil)
+        player?.currentItem?.addObserver(self, forKeyPath: Constants.playBackLikelyToKeepItUp, options: .new, context: nil)
+        player?.currentItem?.addObserver(self, forKeyPath: Constants.playBackBufferFull, options: .new, context: nil)
+    }
+    
+    //Removing the observer
+    func removingObserver(){
+        /*
+            - We will remove the observer since we dont want to receive any events
+         */
+        //NotificationCenter.default.removeObserver(self, name: UIApplication.willResignActiveNotification, object: nil)
+        //player?.removeObserver(self, forKeyPath: Constants.loadPlayerObserver)
+        
+        player?.currentItem?.removeObserver(self, forKeyPath: Constants.isBufferEmpty)
+        player?.currentItem?.removeObserver(self, forKeyPath: Constants.playBackLikelyToKeepItUp)
+        player?.currentItem?.removeObserver(self, forKeyPath: Constants.playBackBufferFull)
+    }
+    
+    //Handling the player buffer
+    func handlePlayerBuffer(){
+        NotificationCenter.default.addObserver(self,
+                                               selector:#selector(playerStalled(_:)),
+                                               name: NSNotification.Name.AVPlayerItemPlaybackStalled,
+                                               object: self.player?.currentItem)
+
+        /*
+        //When buffer is empty show the progress indicator
+        if let isPlayBackBufferEmpty = self.player?.currentItem?.isPlaybackBufferEmpty{
+            if isPlayBackBufferEmpty{
+                self.progressIndicator.isHidden = false
+                self.progressIndicator.startAnimating()
+            }
+        }
+        
+        if self.player?.currentItem?.status == AVPlayerItem.Status.readyToPlay{
+            if let isPlaybackLikelyToKeepUp = self.player?.currentItem?.isPlaybackLikelyToKeepUp {
+                if isPlaybackLikelyToKeepUp{
+                    self.progressIndicator.stopAnimating()
+                }
+            }
+        }
+         */
+
+    }
+    
+    //When player is stalled show the loader
+    @objc func playerStalled(_ notification: Notification){
+        self.progressIndicator.isHidden = false
+        self.progressIndicator.startAnimating()
+    }
+    
     //MARK:- IBAction Methods
     @IBAction func backButtonAction(_ sender: Any) {
+        
+        //player?.currentItem?.removeObserver(self, forKeyPath:  #keyPath(AVPlayerItem.status))
+        //Dismissing the view controller
         navigationController?.popViewController(animated: true)
     }
     
@@ -116,24 +317,5 @@ class PlayerViewController: AVPlayerViewController {
         //Update the play button visibility status
         playButton.isHidden = isPlaying
         
-    }
-}
-
-extension PlayerViewController: PhotoDetailTransitionAnimatorDelegate {
-    func transitionWillStart() {
-        self.view.isHidden = true
-    }
-
-    func transitionDidEnd() {
-        self.view.isHidden = false
-    }
-
-    func referenceImage() -> UIImage? {
-        return UIImage(named: "noImageList")
-    }
-
-    func imageFrame() -> CGRect? {
-        let rect = CGRect.makeRect(aspectRatio: view.frame.size, insideRect: view.bounds)
-        return rect
     }
 }

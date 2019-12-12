@@ -12,7 +12,7 @@ import AVFoundation
 struct Utility {
     
     //Loading thumbnail cache images
-    fileprivate let imageCache              = NSCache<NSString, UIImage>()
+    static let imageCache              = NSCache<NSString, UIImage>()
     
     /*
      - This function will read the local json file
@@ -74,24 +74,58 @@ struct Utility {
     }
     
     /*
+        - Load image to display into the collectionView
+     */
+    static func loadThumbnailFromMp4(videoUrl : String, completion: @escaping (UIImage?) -> Void){
+        
+        /*
+            - If the video url is empty then we will directly return the noImage
+         */
+        if(videoUrl == ""){
+            completion(UIImage(named: "noimage"))
+            return
+        }
+        
+        /*
+          -  Find if the request video thumbnail is already there in the cache or not
+          -  if its there then directly retur it
+         */
+        if let imageFromCache = imageCache.object(forKey: videoUrl as NSString) {
+            completion(imageFromCache)
+            return
+        }
+        
+        /*
+            - Fetch the thumbnail from the video url
+         */
+        generateThumbnail(videoUrl: videoUrl) { (image) in
+            completion(image)
+        }
+    }
+    
+    /*
         - Getting thumbnail from the video file
      */
-    static func generateThumbnail(videoUrl: String) -> UIImage? {
+    static func generateThumbnail(videoUrl : String, completion: @escaping (UIImage?) -> Void) {
         
-        do {
-            let url                                         = URL(string: videoUrl)
-            let asset                                       = AVURLAsset(url: url!)
-            let imageGenerator                              = AVAssetImageGenerator(asset: asset)
-            imageGenerator.appliesPreferredTrackTransform   = true
-            let cgImage                                     = try imageGenerator.copyCGImage(at: CMTime(seconds: 2.0, preferredTimescale: 60),
-                                                                                             actualTime: nil)
+        DispatchQueue.global().async {
             
-            return UIImage(cgImage: cgImage)
-            
-        } catch {
-            
-            print(error.localizedDescription)
-            return nil
+            do {
+                let url                                         = URL(string: videoUrl)
+                let asset                                       = AVURLAsset(url: url!)
+                let imageGenerator                              = AVAssetImageGenerator(asset: asset)
+                imageGenerator.appliesPreferredTrackTransform   = true
+                let cgImage                                     = try imageGenerator.copyCGImage(at: .zero, actualTime: nil)
+                
+                self.imageCache.setObject(UIImage(cgImage: cgImage), forKey: videoUrl as NSString)
+                
+                completion(UIImage(cgImage: cgImage))
+                
+            } catch {
+                
+                print("Thumbnail Error : \(error.localizedDescription)")
+                completion(UIImage(named: "noimage"))
+            }
         }
     }
 }

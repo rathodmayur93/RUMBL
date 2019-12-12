@@ -22,4 +22,14 @@ struct Constants {
     static let pageViewControllerScreen     = "PageViewController"
     static let playerScreen                 = "PlayerViewController"
     static let mainPageViewController       = "MainPageViewController"
+    static let masterPlayerViewController   = "PlayerMasterViewController"
+    
+    //Segue Name
+    static let player                       = "Player"
+    
+    //Observers
+    static let loadPlayerObserver           = "currentItem.loadedTimeRanges"
+    static let isBufferEmpty                = "playbackBufferEmpty"
+    static let playBackLikelyToKeepItUp     = "playbackLikelyToKeepUp"
+    static let playBackBufferFull           = "playbackBufferFull"
 }

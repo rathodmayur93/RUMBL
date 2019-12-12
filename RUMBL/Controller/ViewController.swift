@@ -26,9 +26,13 @@ class ViewController: UIViewController {
     fileprivate var itemsPerRow     : CGFloat   = 3 // Collection View Number Of Grid In Single Row
     fileprivate let sectionInsets   = UIEdgeInsets(top: 0.0, left: 8.0, bottom: 8.0, right: 8.0)    // Collection View Grid Padding
     
-    fileprivate var selectedCell            : ContentCollectionViewCell?
-    fileprivate var lastSelectedIndexPath   : IndexPath? = nil
-    fileprivate var lastSelectedRow         : Int        = 0
+    fileprivate var selectedCell                : ContentCollectionViewCell?
+    fileprivate var lastSelectedIndexPath       : IndexPath? = nil
+    fileprivate var lastSelectedRow             : Int        = 0
+    fileprivate var currentAnimationTransition  : UIViewControllerAnimatedTransitioning? = nil
+    
+    fileprivate var selectedNode                : [Node]?
+    private var selectedFrame                   : CGRect?
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -45,6 +49,9 @@ class ViewController: UIViewController {
         
         //Load Json from file
         loadJson()
+        
+        //Setting up the tableView
+        setupTableView()
     }
     
     /*
@@ -52,6 +59,13 @@ class ViewController: UIViewController {
     */
     func loadJson(){
         contentModel = Utility.readJSONFromFile(fileName: Constants.jsonFileName)
+    }
+    
+    /*
+        - Setting up the tableView
+     */
+    func setupTableView(){
+        tableView.separatorStyle = .none
     }
     
     //Navigate to the PlayerView Controller method
@@ -67,7 +81,8 @@ class ViewController: UIViewController {
         
         //Passing this data to DetailViewController
         //vc.videoUrl = contentModel?[categoryIndex].nodes?[selectedVideoIndex].video?.encodeURL ?? ""
-        vc.nodes    = contentModel?[categoryIndex].nodes
+        vc.nodes                = contentModel?[categoryIndex].nodes
+        vc.selectedVideoIndex   = selectedVideoIndex
         
         navigationController?.pushViewController(vc, animated: true)
         //present(vc, animated: true, completion: nil)
@@ -126,24 +141,27 @@ extension ViewController : UICollectionViewDelegate, UICollectionViewDataSource 
         }
         
         //Setting up the cell
-        //cell.setupCollectionCell(content: contentModel?[collectionView.tag].nodes?[indexPath.item])
+        cell.setupCollectionCell(content: contentModel?[collectionView.tag].nodes?[indexPath.item], atIndex: indexPath.item)
         
         return cell
     }
     
     func collectionView(_ collectionView: UICollectionView, willDisplay cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
         
-        if let contentCell = cell as? ContentCollectionViewCell{
-            contentCell.setupCollectionCell(content: contentModel?[collectionView.tag].nodes?[indexPath.item])
-        }
     }
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         print("Selected Video Position \(indexPath.item)")
         
         selectedCell            = collectionView.cellForItem(at: indexPath) as? ContentCollectionViewCell
+        selectedNode            = contentModel?[collectionView.tag].nodes
+        
+        let theAttributes:UICollectionViewLayoutAttributes! = collectionView.layoutAttributesForItem(at: indexPath)
+        selectedFrame           = collectionView.convert(theAttributes.frame, to: collectionView.superview)
+        
         lastSelectedIndexPath   = indexPath
         lastSelectedRow         = collectionView.tag
+        
         navigateToPlayerScreen(categoryIndex: collectionView.tag, selectedVideoIndex: indexPath.item)
         
     }
@@ -170,6 +188,7 @@ extension ViewController : UICollectionViewDelegateFlowLayout{
     }
 }
 
+/*
 //MARK|:- Transition Delegate Methods
 extension ViewController : PhotoDetailTransitionAnimatorDelegate{
     
@@ -206,3 +225,49 @@ extension ViewController : PhotoDetailTransitionAnimatorDelegate{
         return cell.collectionView.convert(cell.frame, to: self.view)
     }
 }
+
+extension ViewController : UINavigationControllerDelegate{
+    
+    func navigationController(_ navigationController: UINavigationController, animationControllerFor operation: UINavigationController.Operation, from fromVC: UIViewController, to toVC: UIViewController) -> UIViewControllerAnimatedTransitioning?{
+        
+        let result: UIViewControllerAnimatedTransitioning?
+        if let photoDetailVC = toVC as? PageViewController,
+            operation == .push
+        {
+            result = PhotoDetailPushTransition(fromDelegate: fromVC, toPhotoDetailVC: photoDetailVC)
+        }
+//        else if
+//            let photoDetailVC = fromVC as? PageViewController,
+//            operation == .pop
+//        {
+//
+////            if photoDetailVC.isInteractivelyDismissing {
+////                result = PhotoDetailInteractiveDismissTransition(fromDelegate: photoDetailVC, toDelegate: toVC)
+////            } else {
+////                result = PhotoDetailPopTransition(toDelegate: toVC, fromPhotoDetailVC: photoDetailVC)
+////            }
+//        }
+        else {
+            result = nil
+        }
+        self.currentAnimationTransition = result
+        return result
+        
+    }
+    
+    public func navigationController(
+        _ navigationController: UINavigationController,
+        interactionControllerFor animationController: UIViewControllerAnimatedTransitioning
+    ) -> UIViewControllerInteractiveTransitioning? {
+        return self.currentAnimationTransition as? UIViewControllerInteractiveTransitioning
+    }
+
+    public func navigationController(
+        _ navigationController: UINavigationController,
+        didShow viewController: UIViewController,
+        animated: Bool
+    ) {
+        self.currentAnimationTransition = nil
+    }
+}
+*/

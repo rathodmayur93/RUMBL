@@ -16,6 +16,7 @@ class PageViewController: UIViewController {
     
     //Getting the values from previous ViewCOntroller i.e ViewController or Explore Screen
     var nodes               : [Node]?
+    var selectedVideoIndex  : Int = 0
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -23,15 +24,21 @@ class PageViewController: UIViewController {
         createPageViewController()
     }
     
+    /*
+        - Setting the status bar text colors to white since the whole screen will black while loading the video so to show the battery status and time we need to change the status bar style to lightContent
+     */
+    override var preferredStatusBarStyle: UIStatusBarStyle{
+        return .lightContent
+    }
+    
     func createPageViewController() {
         let pageController = self.storyboard?.instantiateViewController(withIdentifier: Constants.mainPageViewController) as! UIPageViewController
         
-        pageController.isDoubleSided = false
         pageController.dataSource    = self
         pageController.delegate      = self
         
-        if nodes!.count > 1{
-            let firstController = getContentViewController(withIndex: 0)!
+        if nodes!.count > 0{
+            let firstController = getContentViewController(withIndex: selectedVideoIndex)!
             //let secondController = getContentViewController(withIndex: 1)!
             let contentControllers = [firstController]
             pageController.setViewControllers(contentControllers, direction: UIPageViewController.NavigationDirection.forward, animated: true, completion: nil)
@@ -86,15 +93,12 @@ class PageViewController: UIViewController {
 
 extension PageViewController: UIPageViewControllerDataSource, UIPageViewControllerDelegate {
     
-    func pageViewController(_ pageViewController: UIPageViewController, willTransitionTo pendingViewControllers: [UIViewController]) {
-        pendingIndex = (pendingViewControllers.first as! PlayerViewController).itemIndex
-    }
-    
     func pageViewController(_ pageViewController: UIPageViewController, viewControllerBefore viewController: UIViewController) -> UIViewController? {
         
         let contentVC = viewController as! PlayerViewController
         
         if contentVC.itemIndex > 0 {
+            print("Paginating to previous screen")
             return getContentViewController(withIndex: contentVC.itemIndex - 1)
         }
         
@@ -104,6 +108,7 @@ extension PageViewController: UIPageViewControllerDataSource, UIPageViewControll
     func pageViewController(_ pageViewController: UIPageViewController, viewControllerAfter viewController: UIViewController) -> UIViewController? {
         let contentVC = viewController as! PlayerViewController
         if contentVC.itemIndex + 1 < nodes!.count {
+            print("Paginating to next screen")
             return getContentViewController(withIndex: contentVC.itemIndex + 1)
         }
         
